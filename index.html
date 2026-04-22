@@ -108,34 +108,11 @@ canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-e
 /* ── HERO TITLE ── */
 .hero-title{
   font-size:clamp(38px,5.5vw,78px);
-  line-height:1.1;margin-bottom:30px;
-  max-width:1000px;cursor:default;
-  position:relative;
+  line-height:1.15;margin-bottom:30px;
+  max-width:900px;cursor:default;
+  color:#ffffff;font-weight:600;letter-spacing:0.02em;
+  text-shadow:none;
 }
-.hero-title .line1{
-  display:block;font-weight:300;letter-spacing:0.04em;
-  background:var(--grad-text);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  position:relative;
-  /* shimmer on hover via JS */
-}
-.hero-title .line2{
-  display:block;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
-  color:#ffffff;font-size:1.15em;
-  text-shadow:0 2px 40px rgba(255,255,255,0.25);
-}
-.hero-title .line3{
-  display:block;font-weight:300;letter-spacing:0.28em;text-transform:uppercase;
-  color:rgba(255,200,205,0.85);font-size:0.52em;margin-top:6px;
-}
-/* shimmer overlay */
-.hero-shimmer{
-  position:absolute;inset:0;pointer-events:none;border-radius:4px;
-  background:radial-gradient(circle 140px at var(--sx,50%) var(--sy,50%),rgba(255,255,255,0.18) 0%,transparent 70%);
-  mix-blend-mode:screen;opacity:0;transition:opacity .15s;
-}
-.hero-title:hover .hero-shimmer{opacity:1;}
 
 .hero-sub{
   font-size:15px;font-weight:300;letter-spacing:0.07em;
@@ -741,6 +718,74 @@ canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-e
 }
 .team-name{font-size:12px;font-weight:400;color:rgba(255,255,255,0.8);letter-spacing:0.04em;line-height:1.4;}
 
+.home-detail-stack{max-width:960px;display:grid;gap:28px;}
+.home-detail-block{padding-top:28px;border-top:1px solid rgba(255,255,255,0.14);}
+.home-detail-block:first-child{padding-top:0;border-top:none;}
+.home-detail-title{
+  font-size:18px;font-weight:600;letter-spacing:0.06em;
+  color:#fff;margin-bottom:12px;
+}
+.home-detail-text{
+  font-size:14px;font-weight:300;line-height:1.85;
+  color:#fff;max-width:920px;margin-bottom:12px;
+}
+.home-detail-text:last-child{margin-bottom:0;}
+.home-detail-links{display:flex;flex-wrap:wrap;gap:14px 24px;margin-top:8px;}
+.home-detail-link{
+  font-size:14px;font-weight:300;color:#fff;text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,0.35);padding-bottom:2px;
+}
+.home-detail-link:hover{border-color:#fff;}
+
+.about-page{max-width:920px;margin:0 auto;padding:48px 32px 80px;}
+.about-kicker{
+  font-size:11px;font-weight:600;letter-spacing:0.18em;
+  text-transform:uppercase;color:#fff;margin-bottom:18px;
+}
+.about-simple-title{
+  font-size:clamp(32px,4.5vw,58px);font-weight:600;
+  line-height:1.12;letter-spacing:0.02em;color:#fff;
+  margin-bottom:24px;max-width:860px;
+}
+.about-column{display:grid;gap:28px;}
+.about-text-block{padding-top:24px;border-top:1px solid rgba(255,255,255,0.14);}
+.about-text-block:first-child{padding-top:0;border-top:none;}
+.about-text-title{
+  font-size:15px;font-weight:600;letter-spacing:0.14em;
+  text-transform:uppercase;color:#fff;margin-bottom:12px;
+}
+.about-text-body{
+  font-size:14px;font-weight:300;line-height:1.9;
+  color:#fff;margin-bottom:12px;
+}
+.about-text-body:last-child{margin-bottom:0;}
+
+@media (max-width: 1024px){
+  .feed-layout{grid-template-columns:1fr;}
+  .companies-grid{grid-template-columns:1fr;}
+  .profile-layout{grid-template-columns:1fr;}
+  .hero-stats{gap:24px;flex-wrap:wrap;justify-content:center;}
+}
+
+@media (max-width: 760px){
+  .nav{
+    height:auto;min-height:62px;padding:12px 16px;
+    flex-wrap:wrap;justify-content:space-between;
+  }
+  .nav-search{order:3;flex:1 1 100%;max-width:none;margin:8px 0 0;}
+  .nav-links{
+    order:4;flex:1 1 100%;justify-content:flex-start;
+    overflow-x:auto;padding-bottom:2px;
+  }
+  .nav-right{margin-left:auto;}
+  .page{padding-top:128px;}
+  .hero,.section,.feed-layout,.companies-layout,.profile-layout,.about-page{padding-left:20px;padding-right:20px;}
+  .opp-tabs,.opp-content{padding-left:20px;padding-right:20px;}
+  .hero-stats{gap:20px;}
+  .cards-grid,.companies-grid{grid-template-columns:1fr;}
+  .home-detail-links{flex-direction:column;gap:10px;}
+}
+
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2);border-radius:4px;}
@@ -778,13 +823,7 @@ canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-e
 <!-- ══ HOME ══ -->
 <div class="page active" id="page-home">
   <section class="hero">
-    <div class="hero-badge"><span></span>Нова платформа для студентів України</div>
-    <h1 class="hero-title" id="heroTitle">
-      <span class="line1">Платформа кар'єрних</span>
-      <span class="line2">можливостей</span>
-      <span class="line3">для студентів України</span>
-      <div class="hero-shimmer" id="heroShimmer"></div>
-    </h1>
+    <h1 class="hero-title" id="heroTitle">Платформа кар'єрних можливостей для студентів України</h1>
     <p class="hero-sub">Знаходь стажування, гранти, конкурси та проєкти. Будуй кар'єру разом із перевіреними компаніями та однодумцями.</p>
     <div class="hero-ctas">
       <button class="btn btn-primary" onclick="showPage('opportunities')">
@@ -855,6 +894,34 @@ canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-e
       <button class="section-more" onclick="showPage('companies')">Всі компанії →</button>
     </div>
     <div class="cards-grid" id="homeCompanies"></div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="home-detail-stack">
+      <div class="home-detail-block">
+        <h2 class="home-detail-title">Більше про компанії</h2>
+        <p class="home-detail-text">StudGo об'єднує компанії, які готові працювати зі студентами через стажування, короткі оплачувані завдання, конкурси, грантові програми та менторські формати. На головній сторінці ми показуємо приклади партнерів з ІТ, дизайну, фінтеху, освіти та креативних індустрій.</p>
+        <p class="home-detail-text">Кожна компанія може представити свій профіль, описати формат співпраці, вимоги до кандидатів, дедлайни та переваги для студентів, які лише починають свій професійний шлях.</p>
+      </div>
+      <div class="home-detail-block">
+        <h2 class="home-detail-title">Умови співпраці з нами</h2>
+        <p class="home-detail-text">Ми відкриті до співпраці з компаніями, університетами, кар'єрними центрами, фондами та освітніми ініціативами. Для партнерства важливі прозорі описи можливостей, зрозумілі дедлайни, чесні умови відбору та реальна цінність для студентів.</p>
+        <p class="home-detail-text">Формати співпраці можуть включати стажування, конкурси, освітні програми, менторство, волонтерські ролі, події та спільні кар'єрні ініціативи, що допомагають молоді отримати перший практичний досвід.</p>
+      </div>
+      <div class="home-detail-block">
+        <h2 class="home-detail-title">Вступай в нашу команду</h2>
+        <p class="home-detail-text">StudGo розвивається як студентська ініціатива і відкрита до людей, які хочуть допомагати з комунікаціями, дизайном, партнерствами, дослідженням аудиторії, організацією подій та розвитком продукту.</p>
+        <p class="home-detail-text">До проєкту можна долучитися як волонтер, партнер, ментор або учасник команди, що допомагає масштабувати платформу та розширювати доступ студентів до кар'єрних можливостей.</p>
+      </div>
+      <div class="home-detail-block">
+        <h2 class="home-detail-title">Джерела інформації</h2>
+        <div class="home-detail-links">
+          <a class="home-detail-link" href="https://www.instagram.com/liudmyromanenko?igsh=Y3JxNXhhanF4dzlh&utm_source=qr" target="_blank" rel="noreferrer">Instagram</a>
+          <a class="home-detail-link" href="https://www.linkedin.com/in/liudmyla-romanenko-6b89123a6?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a class="home-detail-link" href="mailto:lyuda150608@gmail.com">Gmail: lyuda150608@gmail.com</a>
+        </div>
+      </div>
+    </div>
   </section>
 </div>
 
@@ -986,181 +1053,46 @@ canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-e
 </div>
 <!-- ══ ABOUT ══ -->
 <div class="page" id="page-about">
-
-  <!-- ABOUT HERO -->
-  <div class="about-hero">
-    <div class="about-hero-flower" id="aboutFlower"></div>
-    <div class="about-hero-text">
-      <div class="hero-badge" style="margin-bottom:24px"><span></span>Наша місія</div>
-      <h2 class="about-main-title">Ми будуємо міст<br><span>між талантом і можливістю</span></h2>
-      <p class="about-lead">StudGo — це відкрита цифрова платформа, що знижує бар'єр входу для студентів на ринок праці через систему мікро-завдань, грантового навігатора та студентського стартап-акселератора.</p>
-    </div>
-  </div>
-
-  <!-- PROBLEM BLOCK -->
-  <div class="about-section">
-    <div class="about-section-inner">
-      <div class="about-problem-grid">
-        <div class="about-problem-card">
-          <div class="about-stat-big">50%+</div>
-          <div class="about-stat-desc">безробітних в Україні — особи <strong>до 35 років</strong>. Молодь страждає від ринку праці найбільше.</div>
-        </div>
-        <div class="about-problem-card">
-          <div class="about-stat-big">74%</div>
-          <div class="about-stat-desc">українських компаній відчувають <strong>критичний дефіцит</strong> кваліфікованих кадрів</div>
-        </div>
-        <div class="about-problem-card">
-          <div class="about-stat-big">94%</div>
-          <div class="about-stat-desc">роботодавців планують <strong>підвищити зарплати</strong> у 2026, щоб утримати працівників</div>
-        </div>
-        <div class="about-problem-card">
-          <div class="about-stat-big">16:10</div>
-          <div class="about-stat-desc">вакансій на шукача в Києві, Львові та Дніпрі — <strong>роботодавці чекають на вас</strong></div>
-        </div>
+  <div class="about-page">
+    <div class="about-kicker">Про StudGo</div>
+    <h2 class="about-simple-title">StudGo — платформа кар'єрних можливостей для студентів України</h2>
+    <div class="about-column">
+      <div class="about-text-block">
+        <div class="about-text-title">Про проєкт</div>
+        <p class="about-text-body">StudGo — це відкрита цифрова платформа, яка допомагає студентам швидше знаходити стажування, конкурси, гранти, мікропроєкти та перші кар'єрні можливості.</p>
+        <p class="about-text-body">Ми хочемо зменшити бар'єр між навчанням і першою роботою та дати компаніям прямий доступ до мотивованих молодих фахівців.</p>
+      </div>
+      <div class="about-text-block">
+        <div class="about-text-title">Чому це важливо</div>
+        <p class="about-text-body"><strong>50%+</strong> безробітних в Україні — люди до 35 років. <strong>74%</strong> компаній відчувають дефіцит кадрів, а <strong>94%</strong> роботодавців планують підвищувати зарплати, щоб утримати працівників. Це означає, що молодь потребує зрозумілого входу, а бізнес — прозорого каналу пошуку талантів.</p>
+      </div>
+      <div class="about-text-block">
+        <div class="about-text-title">Мета</div>
+        <p class="about-text-body">Створити просту цифрову екосистему, де студенти можуть отримати перший реальний досвід, зібрати портфоліо та швидше вийти на ринок праці.</p>
+      </div>
+      <div class="about-text-block">
+        <div class="about-text-title">Бачення</div>
+        <p class="about-text-body">Ми бачимо Україну, де кожен студент має доступ до якісних можливостей незалежно від міста, а компанії можуть легко знаходити молодих спеціалістів для стажувань, проєктів і довгострокової співпраці.</p>
+      </div>
+      <div class="about-text-block">
+        <div class="about-text-title">Як працює StudGo</div>
+        <p class="about-text-body">Компанії публікують можливості, студенти відгукуються, формують профіль, збирають досвід і будують перші професійні зв'язки. Усередині платформи поєднуються каталог можливостей, перевірені компанії, CV-конструктор та спільнота.</p>
+      </div>
+      <div class="about-text-block">
+        <div class="about-text-title">Для кого платформа</div>
+        <p class="about-text-body">StudGo створюється для студентів бакалаврату і магістратури, студентських команд, стартап-ініціатив, українських компаній, університетів та міжнародних партнерів, які працюють з молоддю й розвитком людського капіталу.</p>
+      </div>
+      <div class="about-text-block">
+        <div class="about-text-title">Етапи розвитку</div>
+        <p class="about-text-body">Перший етап — дослідження потреб студентів і компаній. Другий — запуск MVP та перших партнерств. Третій — пілот у кількох університетах. Четвертий — масштабування в Україні та розвиток міжнародних зв'язків.</p>
+      </div>
+      <div class="about-text-block">
+        <div class="about-text-title">Команда проєкту</div>
+        <p class="about-text-body">Людмила Романенко, Артем Тетерук, Альбіна Насалевець, Юлія Кравченко, Анна Приходько, Софія Земцева, Дар'я Стрілець, Єгор Аленін.</p>
+        <p class="about-text-body">Києво-Могилянська школа професійної та неперервної освіти.</p>
       </div>
     </div>
   </div>
-
-  <!-- VISION / MISSION -->
-  <div class="about-section" style="background:rgba(255,255,255,0.04)">
-    <div class="about-section-inner">
-      <div class="about-two-col">
-        <div class="about-block">
-          <div class="about-block-icon">🎯</div>
-          <div class="about-block-label">Мета</div>
-          <div class="about-block-title">Навіщо ми тут</div>
-          <div class="about-block-text">Створити відкриту цифрову платформу, що знижує бар'єр входу для студентів на ринок праці через систему мікро-завдань, грантового навігатора та студентського стартап-акселератора — одночасно забезпечуючи компаніям доступ до мотивованих молодих кадрів.</div>
-        </div>
-        <div class="about-block">
-          <div class="about-block-icon">🔭</div>
-          <div class="about-block-label">Бачення</div>
-          <div class="about-block-title">Яким ми бачимо майбутнє</div>
-          <div class="about-block-text">Україна, де кожен студент — від Ужгорода до Харкова — має рівний доступ до якісних можливостей для старту кар'єри. Де компанії знаходять найкращих молодих фахівців, а не страждають від кадрового голоду. Де навчання і робота переплітаються органічно.</div>
-        </div>
-        <div class="about-block">
-          <div class="about-block-icon">💡</div>
-          <div class="about-block-label">Ідея</div>
-          <div class="about-block-title">Як це працює</div>
-          <div class="about-block-text">Компанії публікують реальні оплачувані завдання та конкурси — студенти подаються, виконують, отримують досвід і першу перевірену роботу в портфоліо. Верифіковані профілі, CV-конструктор, грантовий навігатор і соціальна стрічка роблять платформу живим екосистемним простором.</div>
-        </div>
-        <div class="about-block">
-          <div class="about-block-icon">🚀</div>
-          <div class="about-block-label">Очікування</div>
-          <div class="about-block-title">Що ми плануємо</div>
-          <div class="about-block-text">50 000+ зареєстрованих студентів, 500+ партнерських компаній, 10 000+ вакансій і грантів щорічно. Вихід на діаспорні та міжнародні аудиторії та партнерство з провідними університетами України та Європи.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- AUDIENCE -->
-  <div class="about-section">
-    <div class="about-section-inner">
-      <div class="about-section-head">
-        <div class="about-section-title">Для кого <span>StudGo</span></div>
-      </div>
-      <div class="about-audience-grid">
-        <div class="about-aud-card">
-          <div class="about-aud-icon">🎓</div>
-          <div class="about-aud-title">Студенти 1–2 курсів</div>
-          <div class="about-aud-text">Основна аудиторія. Найбільш мотивовані до швидкого старту та формування першого портфоліо через реальні завдання від компаній.</div>
-        </div>
-        <div class="about-aud-card">
-          <div class="about-aud-icon">📚</div>
-          <div class="about-aud-title">Магістранти</div>
-          <div class="about-aud-text">Шукають гранти, вузьку спеціалізацію та канали для виходу на міжнародний ринок. Готові до складніших проєктів та менторства.</div>
-        </div>
-        <div class="about-aud-card">
-          <div class="about-aud-icon">⚡</div>
-          <div class="about-aud-title">Startup-команди</div>
-          <div class="about-aud-text">Студентські ініціативи, що потребують менторства, акселерації та зв'язків з інвесторами. Знаходять партнерів і ресурси на платформі.</div>
-        </div>
-        <div class="about-aud-card">
-          <div class="about-aud-icon">🏢</div>
-          <div class="about-aud-title">IT/tech компанії</div>
-          <div class="about-aud-text">Найсильніший гравець з точки зору вигоди. Отримують доступ до мотивованої молоді, закривають кадровий дефіцит і будують бренд роботодавця.</div>
-        </div>
-        <div class="about-aud-card">
-          <div class="about-aud-icon">🏛️</div>
-          <div class="about-aud-title">Держава</div>
-          <div class="about-aud-text">Формально не є головним користувачем, але має стратегічний інтерес: зниження молодіжного безробіття та розвиток людського капіталу.</div>
-        </div>
-        <div class="about-aud-card">
-          <div class="about-aud-icon">🌍</div>
-          <div class="about-aud-title">Міжнародні фонди</div>
-          <div class="about-aud-text">Фінансування стартапів і розвиток людського капіталу в Україні через вже готову інфраструктуру. EU4Youth, USAID та інші.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TIMELINE -->
-  <div class="about-section" style="background:rgba(255,255,255,0.04)">
-    <div class="about-section-inner">
-      <div class="about-section-head">
-        <div class="about-section-title">Таймлайн <span>реалізації</span></div>
-      </div>
-      <div class="about-timeline">
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-phase">Фаза 1 · міс. 1–3</div>
-            <div class="timeline-label">Дослідження</div>
-            <div class="timeline-text">Глибинні інтерв'ю з 50+ студентами та 20+ компаніями, аналіз конкурентних платформ, формування вимог до MVP.</div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-phase">Фаза 2 · міс. 4–7</div>
-            <div class="timeline-label">MVP</div>
-            <div class="timeline-text">Розробка вебплатформи з challenge-профілями та грантовим навігатором. 10 компаній-партнерів. Запуск у 3 університетах.</div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-phase">Фаза 3 · міс. 8–12</div>
-            <div class="timeline-label">Пілот</div>
-            <div class="timeline-text">Масштабування до 20 університетів, запуск стартап-студії, залучення міжнародних грантодавців. Перша когорта 5000+ студентів.</div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot active"></div>
-          <div class="timeline-content">
-            <div class="timeline-phase">Фаза 4 · роки 2–3</div>
-            <div class="timeline-label">Розвиток</div>
-            <div class="timeline-text">Вихід на діаспорні та міжнародні аудиторії. Партнерства з європейськими освітніми програмами. Фінансова стійкість платформи.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TEAM -->
-  <div class="about-section">
-    <div class="about-section-inner">
-      <div class="about-section-head">
-        <div class="about-section-title">Команда <span>проєкту</span></div>
-        <div style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.45);letter-spacing:0.06em">Публічна політика та публічна дипломатія · КМА</div>
-      </div>
-      <div class="team-grid">
-        <div class="team-card"><div class="team-av">ЛР</div><div class="team-name">Людмила Романенко</div></div>
-        <div class="team-card"><div class="team-av">АТ</div><div class="team-name">Артем Тетерук</div></div>
-        <div class="team-card"><div class="team-av">АН</div><div class="team-name">Альбіна Насалевець</div></div>
-        <div class="team-card"><div class="team-av">ЮК</div><div class="team-name">Юлія Кравченко</div></div>
-        <div class="team-card"><div class="team-av">АП</div><div class="team-name">Анна Приходько</div></div>
-        <div class="team-card"><div class="team-av">СЗ</div><div class="team-name">Софія Земцева</div></div>
-        <div class="team-card"><div class="team-av">ДС</div><div class="team-name">Дар'я Стрілець</div></div>
-        <div class="team-card"><div class="team-av">ЄА</div><div class="team-name">Єгор Аленін</div></div>
-      </div>
-      <div style="text-align:center;margin-top:28px;padding-top:28px;border-top:1px solid rgba(255,255,255,0.08)">
-        <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase">Навчальний заклад</div>
-        <div style="font-size:16px;font-weight:700;color:#fff;letter-spacing:0.08em;margin-top:8px">Києво-Могилянська школа професійної та неперервної освіти</div>
-      </div>
-    </div>
-  </div>
-
 </div>
 
 </div><!-- /#app -->
@@ -1506,13 +1438,15 @@ setTimeout(drawAboutFlower, 300);
 // ══════════════════════════════════════
 const heroTitle = document.getElementById('heroTitle');
 const heroShimmer = document.getElementById('heroShimmer');
-heroTitle.addEventListener('mousemove', e => {
-  const r = heroTitle.getBoundingClientRect();
-  const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
-  const y = ((e.clientY - r.top) / r.height * 100).toFixed(1);
-  heroShimmer.style.setProperty('--sx', x + '%');
-  heroShimmer.style.setProperty('--sy', y + '%');
-});
+if (heroTitle && heroShimmer) {
+  heroTitle.addEventListener('mousemove', e => {
+    const r = heroTitle.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
+    const y = ((e.clientY - r.top) / r.height * 100).toFixed(1);
+    heroShimmer.style.setProperty('--sx', x + '%');
+    heroShimmer.style.setProperty('--sy', y + '%');
+  });
+}
 
 // ══════════════════════════════════════
 // NAVIGATION
@@ -1585,7 +1519,7 @@ function renderHomeOpps() {
 }
 
 function renderHomeCompanies() {
-  document.getElementById('homeCompanies').innerHTML = companies.slice(0,3).map(c => `
+  document.getElementById('homeCompanies').innerHTML = companies.map(c => `
     <div class="card" onclick="showPage('companies')" style="cursor:pointer">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
         <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:20px">${c.icon}</div>
