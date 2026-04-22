@@ -19,15 +19,41 @@
   --grad:linear-gradient(135deg,#564A96,#B75F67);
   --grad-r:linear-gradient(135deg,#B75F67,#564A96);
   --grad-text:linear-gradient(135deg,#a89ee0 0%,#e8a0a8 100%);
+  --bg-angle:0deg;
+  --bg-shift-x:0px;
+  --bg-shift-y:0px;
+  --bg-drift:0px;
+  --glow-x:18%;
+  --glow-opacity:0.32;
 }
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Josefin Sans',sans-serif;}
 html{scroll-behavior:smooth;}
 body{
-  background:linear-gradient(145deg,#3b3278 0%,#564A96 28%,#8b5070 62%,#B75F67 100%);
+  background:
+    radial-gradient(circle at calc(22% + var(--bg-shift-x)) calc(18% + var(--bg-shift-y)),rgba(255,255,255,0.10) 0%,transparent 34%),
+    radial-gradient(circle at calc(78% - var(--bg-shift-x)) calc(78% - var(--bg-shift-y)),rgba(255,205,215,0.13) 0%,transparent 30%),
+    linear-gradient(calc(145deg + var(--bg-angle)),#3b3278 0%,#564A96 28%,#8b5070 62%,#B75F67 100%);
   background-attachment:fixed;
+  background-size:150% 150%,140% 140%,100% 100%;
   color:var(--text);
   min-height:100vh;overflow-x:hidden;
   font-weight:300;letter-spacing:0.03em;
+  position:relative;
+  isolation:isolate;
+}
+body::before{
+  content:'';
+  position:fixed;inset:-18%;
+  background:
+    radial-gradient(circle at var(--glow-x) 20%,rgba(255,255,255,0.12) 0%,transparent 28%),
+    radial-gradient(circle at calc(100% - var(--glow-x)) 82%,rgba(255,195,210,0.16) 0%,transparent 30%),
+    radial-gradient(circle at 50% 50%,rgba(255,255,255,0.05) 0%,transparent 56%);
+  opacity:var(--glow-opacity);
+  transform:translate3d(0,var(--bg-drift),0) scale(1.08);
+  filter:blur(22px);
+  mix-blend-mode:screen;
+  pointer-events:none;
+  z-index:-1;
 }
 canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
 #app{position:relative;z-index:1;}
@@ -87,6 +113,23 @@ canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-e
 /* ── PAGES ── */
 .page{display:none;padding-top:62px;min-height:100vh;}
 .page.active{display:block;}
+
+.reveal-on-scroll{
+  opacity:0;
+  transform:translate3d(0,36px,0) scale(0.985);
+  filter:blur(8px);
+  transition:
+    opacity .72s ease,
+    transform .72s cubic-bezier(.2,.85,.25,1),
+    filter .72s ease;
+  transition-delay:var(--reveal-delay,0ms);
+  will-change:opacity,transform,filter;
+}
+.reveal-on-scroll.is-visible{
+  opacity:1;
+  transform:translate3d(0,0,0) scale(1);
+  filter:blur(0);
+}
 
 /* ── HERO ── */
 .hero{
@@ -786,6 +829,17 @@ canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-e
   .home-detail-links{flex-direction:column;gap:10px;}
 }
 
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  body::before{display:none;}
+  .reveal-on-scroll{
+    opacity:1;
+    transform:none;
+    filter:none;
+    transition:none;
+  }
+}
+
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2);border-radius:4px;}
@@ -1214,21 +1268,22 @@ function resize() {
 resize();
 window.addEventListener('resize', resize);
 document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+document.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
 
 // ── PARTICLES (increased) ──────────────
-const NUM_PARTICLES = 140;
+const NUM_PARTICLES = 185;
 const particles = [];
 
 for (let i = 0; i < NUM_PARTICLES; i++) {
   particles.push({
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
-    r: Math.random() * 1.8 + 0.3,
-    vx: (Math.random() - 0.5) * 0.2,
-    vy: (Math.random() - 0.5) * 0.2,
-    alpha: Math.random() * 0.22 + 0.05,
+    r: Math.random() * 1.9 + 0.45,
+    vx: (Math.random() - 0.5) * 0.26,
+    vy: (Math.random() - 0.5) * 0.26,
+    alpha: Math.random() * 0.24 + 0.10,
     phase: Math.random() * Math.PI * 2,
-    speed: Math.random() * 0.006 + 0.002,
+    speed: Math.random() * 0.008 + 0.003,
   });
 }
 
@@ -1240,7 +1295,7 @@ const flowerObj = {
   rotAngle: 0,
   rotSpeed: 0.003,
   scale: 1,
-  alpha: 0.22,
+  alpha: 0.14,
 };
 function placeFlower() {
   flowerObj.baseX = W * 0.78;
@@ -1369,19 +1424,19 @@ function drawAboutFlower() {
 
 // ── LINES between close particles ──
 function drawConnections() {
-  const DIST = 80;
+  const DIST = 92;
   for (let i = 0; i < particles.length; i++) {
     for (let j = i + 1; j < particles.length; j++) {
       const dx = particles[i].x - particles[j].x;
       const dy = particles[i].y - particles[j].y;
       const d = Math.sqrt(dx * dx + dy * dy);
       if (d < DIST) {
-        const a = (1 - d / DIST) * 0.07;
+        const a = (1 - d / DIST) * 0.09;
         ctx.beginPath();
         ctx.moveTo(particles[i].x, particles[i].y);
         ctx.lineTo(particles[j].x, particles[j].y);
         ctx.strokeStyle = `rgba(255,240,255,${a})`;
-        ctx.lineWidth = 0.4;
+        ctx.lineWidth = 0.55;
         ctx.stroke();
       }
     }
@@ -1392,6 +1447,17 @@ let frame = 0;
 function animate() {
   ctx.clearRect(0, 0, W, H);
   frame++;
+
+  flowerObj.bobAngle += flowerObj.bobSpeed;
+  flowerObj.rotAngle += flowerObj.rotSpeed;
+  const bobY = Math.sin(flowerObj.bobAngle) * 20;
+  const bobX = Math.cos(flowerObj.bobAngle * 0.5) * 8;
+  drawFlower(
+    flowerObj.baseX + bobX,
+    flowerObj.baseY + bobY,
+    flowerObj.scale, flowerObj.alpha,
+    flowerObj.rotAngle
+  );
 
   // Particles
   for (const p of particles) {
@@ -1404,29 +1470,26 @@ function animate() {
     // Mouse repel
     const dx = p.x - mouse.x, dy = p.y - mouse.y;
     const d = Math.sqrt(dx * dx + dy * dy);
-    if (d < 70) { p.vx += (dx / d) * 0.01; p.vy += (dy / d) * 0.01; }
-    p.vx *= 0.996; p.vy *= 0.996;
+    if (d < 120 && d > 0.001) {
+      const force = (120 - d) / 120;
+      p.vx += (dx / d) * force * 0.08;
+      p.vy += (dy / d) * force * 0.08;
+    }
+    p.vx *= 0.992; p.vy *= 0.992;
+    const velocity = Math.hypot(p.vx, p.vy);
+    if (velocity > 1.5) {
+      p.vx = (p.vx / velocity) * 1.5;
+      p.vy = (p.vy / velocity) * 1.5;
+    }
 
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    const pa = Math.max(0.03, p.alpha + Math.sin(p.phase) * 0.04);
+    const pa = Math.max(0.06, p.alpha + Math.sin(p.phase) * 0.05);
     ctx.fillStyle = `rgba(255,240,255,${pa})`;
     ctx.fill();
   }
 
   if (frame % 2 === 0) drawConnections();
-
-  // Flower
-  flowerObj.bobAngle += flowerObj.bobSpeed;
-  flowerObj.rotAngle += flowerObj.rotSpeed;
-  const bobY = Math.sin(flowerObj.bobAngle) * 20;
-  const bobX = Math.cos(flowerObj.bobAngle * 0.5) * 8;
-  drawFlower(
-    flowerObj.baseX + bobX,
-    flowerObj.baseY + bobY,
-    flowerObj.scale, flowerObj.alpha,
-    flowerObj.rotAngle
-  );
 
   requestAnimationFrame(animate);
 }
@@ -1451,6 +1514,91 @@ if (heroTitle && heroShimmer) {
 // ══════════════════════════════════════
 // NAVIGATION
 // ══════════════════════════════════════
+const revealSelector = [
+  '.hero-title',
+  '.hero-sub',
+  '.hero-ctas',
+  '.hero-stats',
+  '.partners-strip',
+  '.section-head',
+  '.cards-grid .card',
+  '.home-detail-block',
+  '.post-create',
+  '.post',
+  '.sidebar-card',
+  '.opp-tabs',
+  '#oppCards .card',
+  '#companiesGrid .company-card',
+  '.profile-hero-card',
+  '.profile-section',
+  '.about-kicker',
+  '.about-simple-title',
+  '.about-text-block'
+].join(',');
+let revealObserver;
+
+function ensureRevealObserver() {
+  if (revealObserver || !('IntersectionObserver' in window)) return;
+  revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('is-visible');
+    });
+  }, {
+    threshold: 0.16,
+    rootMargin: '0px 0px -10% 0px'
+  });
+}
+
+function refreshRevealTargets() {
+  const targets = Array.from(document.querySelectorAll(revealSelector))
+    .filter(el => el.offsetParent !== null);
+  if (!targets.length) return;
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach(el => {
+      el.classList.add('reveal-on-scroll', 'is-visible');
+    });
+    return;
+  }
+  ensureRevealObserver();
+  revealObserver.disconnect();
+  targets.forEach((el, index) => {
+    el.classList.add('reveal-on-scroll');
+    el.classList.remove('is-visible');
+    el.style.setProperty('--reveal-delay', `${(index % 6) * 70}ms`);
+    revealObserver.observe(el);
+  });
+  requestAnimationFrame(() => {
+    targets.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.9) el.classList.add('is-visible');
+    });
+  });
+}
+
+function updateBackgroundMotion() {
+  const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  const progress = Math.min(1, window.scrollY / maxScroll);
+  const shiftX = Math.round(Math.sin(progress * Math.PI * 2) * 34);
+  const shiftY = Math.round(progress * 58);
+  document.body.style.setProperty('--bg-angle', `${(progress * 20).toFixed(2)}deg`);
+  document.body.style.setProperty('--bg-shift-x', `${shiftX}px`);
+  document.body.style.setProperty('--bg-shift-y', `${shiftY}px`);
+  document.body.style.setProperty('--bg-drift', `${Math.round(Math.cos(progress * Math.PI) * -14)}px`);
+  document.body.style.setProperty('--glow-x', `${18 + progress * 58}%`);
+  document.body.style.setProperty('--glow-opacity', `${(0.24 + progress * 0.22).toFixed(3)}`);
+}
+
+function queuePageRefresh() {
+  requestAnimationFrame(() => {
+    refreshRevealTargets();
+    updateBackgroundMotion();
+  });
+  setTimeout(() => {
+    refreshRevealTargets();
+    updateBackgroundMotion();
+  }, 220);
+}
+
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
@@ -1458,6 +1606,7 @@ function showPage(id) {
   const nl = document.getElementById('nav-' + id);
   if (nl) nl.classList.add('active');
   window.scrollTo({top: 0, behavior: 'smooth'});
+  queuePageRefresh();
 }
 
 // ══════════════════════════════════════
@@ -1706,6 +1855,13 @@ function showToast(msg) {
 renderHomeOpps(); renderHomeCompanies();
 renderFeed(); renderSidebar();
 renderOpps('all'); renderCompanies();
+window.addEventListener('scroll', updateBackgroundMotion, {passive:true});
+window.addEventListener('resize', () => {
+  refreshRevealTargets();
+  updateBackgroundMotion();
+});
+refreshRevealTargets();
+updateBackgroundMotion();
 </script>
 </body>
 </html>
